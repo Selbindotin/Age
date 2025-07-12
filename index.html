@@ -5,167 +5,211 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Smart Date Calculators</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
     body {
-      font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      padding: 20px;
+      font-family: 'Segoe UI', sans-serif;
       background: #f0f4f8;
-      color: #333;
     }
+
+    .page {
+      display: none;
+      padding: 20px;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .active {
+      display: block;
+    }
+
     h1 {
       text-align: center;
-      margin-bottom: 20px;
+      margin: 20px 0;
     }
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
       padding: 20px;
-      margin-bottom: 20px;
-      transition: transform 0.3s ease;
     }
-    .card:hover {
-      transform: scale(1.02);
+
+    .tile {
+      background: #007bff;
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s;
     }
+
+    .tile:hover {
+      background: #0056b3;
+      transform: scale(1.05);
+    }
+
+    .back-btn {
+      background: #555;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
     label {
       display: block;
-      margin-top: 10px;
-      font-weight: bold;
+      margin-top: 15px;
     }
-    input, select, button {
+
+    input {
       width: 100%;
       padding: 10px;
-      margin-top: 5px;
+      border-radius: 6px;
       border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
+      margin-top: 5px;
     }
+
     button {
-      background: #007bff;
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background: #28a745;
       color: white;
       font-weight: bold;
       border: none;
-      margin-top: 15px;
+      border-radius: 8px;
+      cursor: pointer;
     }
-    button:hover {
-      background: #0056b3;
-    }
+
     .result {
       margin-top: 15px;
-      font-weight: bold;
       color: green;
+      font-weight: bold;
     }
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 24px;
-      }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
     }
   </style>
 </head>
 <body>
-  <h1>🧮 Smart Date Calculators</h1>
+
+  <!-- Home Tiles -->
+  <div class="page active" id="home">
+    <h1>🧮 Smart Date Tools</h1>
+    <div class="tiles">
+      <div class="tile" onclick="showPage('age')">Age Calculator</div>
+      <div class="tile" onclick="showPage('between')">Days Between Dates</div>
+      <div class="tile" onclick="showPage('tofrom')">Days To/From Date</div>
+      <div class="tile" onclick="showPage('future')">Date After N Days</div>
+      <div class="tile" onclick="showPage('dobfromage')">DOB from Age</div>
+    </div>
+  </div>
 
   <!-- Age Calculator -->
-  <div class="card">
-    <h2>1️⃣ Age Calculator</h2>
-    <label for="dob">Date of Birth:</label>
+  <div class="page" id="age">
+    <button class="back-btn" onclick="showPage('home')">← Back</button>
+    <h2>Age Calculator</h2>
+    <label>Date of Birth:</label>
     <input type="date" id="dob">
-    <button onclick="calculateAge()">Calculate Age</button>
+    <button onclick="calculateAge()">Calculate</button>
     <div class="result" id="ageResult"></div>
   </div>
 
-  <!-- Days Between Dates -->
-  <div class="card">
-    <h2>2️⃣ Days Between Two Dates</h2>
-    <label for="date1">Start Date:</label>
+  <!-- Days Between -->
+  <div class="page" id="between">
+    <button class="back-btn" onclick="showPage('home')">← Back</button>
+    <h2>Days Between Two Dates</h2>
+    <label>Start Date:</label>
     <input type="date" id="date1">
-    <label for="date2">End Date:</label>
+    <label>End Date:</label>
     <input type="date" id="date2">
-    <button onclick="calculateDaysBetween()">Calculate Days</button>
+    <button onclick="calculateDaysBetween()">Calculate</button>
     <div class="result" id="daysBetweenResult"></div>
   </div>
 
-  <!-- Days To/From Certain Date -->
-  <div class="card">
-    <h2>3️⃣ Days To/From a Certain Date</h2>
-    <label for="targetDate">Target Date:</label>
+  <!-- To/From Certain Date -->
+  <div class="page" id="tofrom">
+    <button class="back-btn" onclick="showPage('home')">← Back</button>
+    <h2>Days To/From Date</h2>
+    <label>Target Date:</label>
     <input type="date" id="targetDate">
     <button onclick="calculateDaysToFrom()">Calculate</button>
     <div class="result" id="daysToFromResult"></div>
   </div>
 
-  <!-- Future Date from Days -->
-  <div class="card">
-    <h2>4️⃣ Date After N Days</h2>
-    <label for="numDays">Number of Days:</label>
-    <input type="number" id="numDays" placeholder="Enter number of days">
-    <button onclick="calculateFutureDate()">Get Future Date</button>
+  <!-- Future Date -->
+  <div class="page" id="future">
+    <button class="back-btn" onclick="showPage('home')">← Back</button>
+    <h2>Date After N Days</h2>
+    <label>Number of Days:</label>
+    <input type="number" id="numDays">
+    <button onclick="calculateFutureDate()">Calculate</button>
     <div class="result" id="futureDateResult"></div>
   </div>
 
-  <!-- Birthdate from Age -->
-  <div class="card">
-    <h2>5️⃣ Estimate Birthdate from Age</h2>
-    <label for="inputAge">Enter Age:</label>
-    <input type="number" id="inputAge" placeholder="e.g. 30">
-    <button onclick="estimateDOB()">Estimate DOB</button>
+  <!-- DOB from Age -->
+  <div class="page" id="dobfromage">
+    <button class="back-btn" onclick="showPage('home')">← Back</button>
+    <h2>Estimate DOB from Age</h2>
+    <label>Enter Age:</label>
+    <input type="number" id="inputAge">
+    <button onclick="estimateDOB()">Estimate</button>
     <div class="result" id="dobFromAgeResult"></div>
   </div>
 
   <script>
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
     function calculateAge() {
       const dob = new Date(document.getElementById("dob").value);
       const today = new Date();
-      if (!dob) return;
       let age = today.getFullYear() - dob.getFullYear();
       const m = today.getMonth() - dob.getMonth();
-      if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
-        age--;
-      }
+      if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
       document.getElementById("ageResult").innerText = `You are ${age} years old.`;
     }
 
     function calculateDaysBetween() {
-      const date1 = new Date(document.getElementById("date1").value);
-      const date2 = new Date(document.getElementById("date2").value);
-      if (!date1 || !date2) return;
-      const diff = Math.abs(date2 - date1);
+      const d1 = new Date(document.getElementById("date1").value);
+      const d2 = new Date(document.getElementById("date2").value);
+      const diff = Math.abs(d2 - d1);
       const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-      document.getElementById("daysBetweenResult").innerText = `There are ${days} days between the dates.`;
+      document.getElementById("daysBetweenResult").innerText = `${days} days between the dates.`;
     }
 
     function calculateDaysToFrom() {
       const target = new Date(document.getElementById("targetDate").value);
       const today = new Date();
-      if (!target) return;
-      const diff = target - today;
-      const days = Math.round(diff / (1000 * 60 * 60 * 24));
-      const msg = days > 0
-        ? `${days} days from today.`
-        : days < 0
-        ? `${Math.abs(days)} days ago.`
-        : `Today is the target date!`;
+      const diff = Math.round((target - today) / (1000 * 60 * 60 * 24));
+      let msg = '';
+      if (diff > 0) msg = `${diff} days from today.`;
+      else if (diff < 0) msg = `${Math.abs(diff)} days ago.`;
+      else msg = 'That is today!';
       document.getElementById("daysToFromResult").innerText = msg;
     }
 
     function calculateFutureDate() {
       const days = parseInt(document.getElementById("numDays").value);
-      if (isNaN(days)) return;
-      const future = new Date();
-      future.setDate(future.getDate() + days);
-      document.getElementById("futureDateResult").innerText =
-        `The date after ${days} days will be: ${future.toDateString()}`;
+      const today = new Date();
+      today.setDate(today.getDate() + days);
+      document.getElementById("futureDateResult").innerText = `Future Date: ${today.toDateString()}`;
     }
 
     function estimateDOB() {
       const age = parseInt(document.getElementById("inputAge").value);
-      if (isNaN(age)) return;
       const today = new Date();
-      const dob = new Date(today.getFullYear() - age, today.getMonth(), today.getDate());
-      document.getElementById("dobFromAgeResult").innerText = `Estimated DOB: ${dob.toDateString()}`;
+      const birth = new Date(today.getFullYear() - age, today.getMonth(), today.getDate());
+      document.getElementById("dobFromAgeResult").innerText = `Estimated DOB: ${birth.toDateString()}`;
     }
   </script>
 </body>
